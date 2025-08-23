@@ -1,5 +1,5 @@
 //
-// Created by lenovo on 20/08/2025.
+// Created by lupassos yes sirr on 22/08/2025.
 //
 
 #ifndef CAFE_H
@@ -33,6 +33,14 @@ const int PRECIO_PANDEBONO = 3000;
  * @brief Precio del producto Sándwich.
  */
 const int PRECIO_SANDWICH = 8500;
+
+
+//Precio del nuevo producto.
+/**
+ * @brief Precio del producto Pastel.
+ */
+const int PRECIO_PASTEL = 6000;
+
 
 // --- Descuentos (% expresado de 0.0 a 1.0) ---
 /**

@@ -1,5 +1,5 @@
 //
-// Created by lenovo on 20/08/2025.
+// Created by Me on 20/08/2025.
 //
 #include "Cafe.h"
 
@@ -13,6 +13,8 @@ void mostrarCartaProductos()
     cout << "2. Cappuccino  $" << PRECIO_CAPPUCCINO << "\n";
     cout << "3. Pandebono   $" << PRECIO_PANDEBONO << "\n";
     cout << "4. Sandwich    $" << PRECIO_SANDWICH << "\n";
+    //Nuevo producto
+    cout << "5. Pastel      $" << PRECIO_PASTEL << "\n";
 }
 
 int leerCodigoProducto()
@@ -64,6 +66,11 @@ int obtenerPrecioPorCodigo(int codigoProducto)
     case 4:
         {
             return PRECIO_SANDWICH;
+    case 5:
+        {
+            return PRECIO_PASTEL;
+        }
+
         }
     default:
         {
@@ -91,6 +98,8 @@ string obtenerNombreProducto(int codigoProducto)
     case 4:
         {
             return "Sándwich";
+
+    case 5: {return "Pastel";}
         }
     default:
         {
@@ -205,10 +214,15 @@ void prediligenciarProductosDemo(int codigos[], int cantidades[], int & cantidad
     codigos[2] = 4;  // Sandwich
     cantidades[2] = 1;
 
-    cantidadItemsRegistrados = 3;
+    //Nuevo producto añadido
+    codigos[3] = 5; // Pastel
+    cantidades[3] = 4;
+
+    cantidadItemsRegistrados = 4 ;
 
     cout << "\nSe han cargado productos de ejemplo en el pedido:\n";
     cout << "- 2 Tintos\n";
     cout << "- 3 Pandebonos\n";
     cout << "- 1 Sándwich\n\n";
+    cout << "- 4 Pasteles\n\n";
 }
