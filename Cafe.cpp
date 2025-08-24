@@ -4,8 +4,6 @@
 #include "Cafe.h"
 
 
-
-
 void mostrarCartaProductos()
 {
     cout << "\n--- Carta de productos ---\n";
@@ -13,18 +11,18 @@ void mostrarCartaProductos()
     cout << "2. Cappuccino  $" << PRECIO_CAPPUCCINO << "\n";
     cout << "3. Pandebono   $" << PRECIO_PANDEBONO << "\n";
     cout << "4. Sandwich    $" << PRECIO_SANDWICH << "\n";
-    //Nuevo producto
+    // Agregar un nuevo producto a la carta
     cout << "5. Pastel      $" << PRECIO_PASTEL << "\n";
 }
 
 int leerCodigoProducto()
 {
-    cout << "Ingrese el codigo del producto (1-4): ";
+    cout << "Ingrese el codigo del producto (1-5): ";
     int codigo;
     cin >> codigo;
-    while (codigo < 1 || codigo > 4)
+    while (codigo < 1 || codigo > 5)
     {
-        cout << "Codigo inválido. Intente de nuevo (1-4): ";
+        cout << "Codigo inválido. Intente de nuevo (1-5): ";
         cin.clear();
         cin.ignore(10000, '\n');
         cin >> codigo;
@@ -49,34 +47,42 @@ int leerCantidadProducto()
 
 int obtenerPrecioPorCodigo(int codigoProducto)
 {
+    int precio;
     switch (codigoProducto)
     {
     case 1:
         {
-            return PRECIO_TINTO;
+            precio = PRECIO_TINTO;
+            break;
         }
     case 2:
         {
-            return PRECIO_CAPPUCCINO;
+            precio = PRECIO_CAPPUCCINO;
+            break;
         }
     case 3:
         {
-            return PRECIO_PANDEBONO;
+            precio = PRECIO_PANDEBONO;
+            break;
         }
     case 4:
         {
-            return PRECIO_SANDWICH;
+            precio = PRECIO_SANDWICH;
+            break;
+        }
     case 5:
         {
-            return PRECIO_PASTEL;
-        }
-
+            precio = PRECIO_PASTEL;
+            break;
         }
     default:
         {
-            return 0;
+            precio = 0;
+            break;
         }
     }
+    // Asegurar que el precio sea positivo como buena práctica
+    return (precio > 0) ? precio : 0;
 }
 
 string obtenerNombreProducto(int codigoProducto)
@@ -98,8 +104,10 @@ string obtenerNombreProducto(int codigoProducto)
     case 4:
         {
             return "Sándwich";
-
-    case 5: {return "Pastel";}
+        }
+    case 5:
+        {
+            return "Pastel";
         }
     default:
         {
@@ -138,6 +146,46 @@ void registrarProducto(int codigos[], int cantidades[], int& cantidadItemsRegist
         << " x" << cantidad << "\n\n";
 }
 
+void eliminarProducto(int codigos[], int cantidades[], int& cantidadItemsRegistrados)
+{
+    if (cantidadItemsRegistrados == 0)
+    {
+        cout << "\nEl pedido esta vacio, no hay productos para eliminar.\n\n";
+        return;
+    }
+
+    mostrarResumenPedido(codigos, cantidades, cantidadItemsRegistrados, 0.0);
+    cout << "Ingrese el codigo del producto a eliminar: ";
+    int codigoEliminar;
+    cin >> codigoEliminar;
+
+    int indiceEliminar = -1;
+    for (int i = 0; i < cantidadItemsRegistrados; i++)
+    {
+        if (codigos[i] == codigoEliminar)
+        {
+            indiceEliminar = i;
+            break;
+        }
+    }
+
+    if (indiceEliminar == -1)
+    {
+        cout << "\nEl producto con el codigo " << codigoEliminar << " no se encuentra en el pedido.\n\n";
+        return;
+    }
+
+    // Desplazar los elementos para llenar el espacio vacío
+    for (int i = indiceEliminar; i < cantidadItemsRegistrados - 1; i++)
+    {
+        codigos[i] = codigos[i + 1];
+        cantidades[i] = cantidades[i + 1];
+    }
+
+    cantidadItemsRegistrados--;
+    cout << "\nProducto eliminado del pedido.\n\n";
+}
+
 double calcularSubtotalPedido(const int codigos[], const int cantidades[], int cantidadItemsRegistrados)
 {
     double subtotal = 0.0;
@@ -151,12 +199,12 @@ double calcularSubtotalPedido(const int codigos[], const int cantidades[], int c
 
 int leerTipoUsuario()
 {
-    cout << "Tipo de usuario (1=Estudiante, 2=Profesor, 3=Visitante): ";
+    cout << "Tipo de usuario (1=Estudiante, 2=Profesor, 3=Visitante, 4=Senior): ";
     int tipo;
     cin >> tipo;
-    while (tipo < 1 || tipo > 3)
+    while (tipo < 1 || tipo > 4)
     {
-        cout << "Opción inválida. Intente de nuevo (1-3): ";
+        cout << "Opción inválida. Intente de nuevo (1-4): ";
         cin.clear();
         cin.ignore(10000, '\n');
         cin >> tipo;
@@ -174,7 +222,15 @@ double obtenerPorcentajeDescuento(int tipoUsuario)
     {
         return DESCUENTO_PROFESOR;
     }
-    return DESCUENTO_VISITANTE;
+    if (tipoUsuario == 3)
+    {
+        return DESCUENTO_VISITANTE;
+    }
+    if (tipoUsuario == 4)
+    {
+        return DESCUENTO_SENIOR;
+    }
+    return 0.0; // Caso por defecto
 }
 
 double calcularTotal(double subtotal, double porcentajeDescuento)
@@ -199,7 +255,7 @@ void mostrarResumenPedido(const int codigos[], const int cantidades[], int canti
     cout << "Descuento aplicado: " << (porcentajeDescuento * 100) << "%\n";
 }
 
-void prediligenciarProductosDemo(int codigos[], int cantidades[], int & cantidadItemsRegistrados)
+void prediligenciarProductosDemo(int codigos[], int cantidades[], int& cantidadItemsRegistrados)
 {
     // Limpiar pedido actual si existe
     cantidadItemsRegistrados = 0;
@@ -214,15 +270,47 @@ void prediligenciarProductosDemo(int codigos[], int cantidades[], int & cantidad
     codigos[2] = 4;  // Sandwich
     cantidades[2] = 1;
 
-    //Nuevo producto añadido
+    // Agregar un nuevo producto a la demostración
     codigos[3] = 5; // Pastel
     cantidades[3] = 4;
 
-    cantidadItemsRegistrados = 4 ;
+
+    cantidadItemsRegistrados = 4;
 
     cout << "\nSe han cargado productos de ejemplo en el pedido:\n";
     cout << "- 2 Tintos\n";
     cout << "- 3 Pandebonos\n";
-    cout << "- 1 Sándwich\n\n";
+    cout << "- 1 Sándwich\n";
+    // Agregamos el mensaje del nuevo producto
     cout << "- 4 Pasteles\n\n";
+}
+
+void mostrarProductoMasCaro(const int codigos[], const int cantidades[], int cantidadItemsRegistrados)
+{
+    // Comprobar si hay productos en el pedido.
+    if (cantidadItemsRegistrados == 0)
+    {
+        cout << "\nEl pedido esta vacio, no hay productos para comparar.\n\n";
+        return;
+    }
+
+    // Inicializar el producto mas caro con el primer item del pedido.
+    int codigoMasCaro = codigos[0];
+    int precioMasCaro = obtenerPrecioPorCodigo(codigos[0]);
+
+    // Recorrer el resto del pedido para encontrar el producto con el precio unitario mas alto.
+    for (int i = 1; i < cantidadItemsRegistrados; i++)
+    {
+        int precioActual = obtenerPrecioPorCodigo(codigos[i]);
+        if (precioActual > precioMasCaro)
+        {
+            precioMasCaro = precioActual;
+            codigoMasCaro = codigos[i];
+        }
+    }
+
+    // Mostrar el resultado.
+    cout << "\n===== Producto Mas Caro =====\n";
+    cout << "El producto mas caro en el pedido es: " << obtenerNombreProducto(codigoMasCaro)
+        << " con un precio de $" << precioMasCaro << " por unidad.\n\n";
 }

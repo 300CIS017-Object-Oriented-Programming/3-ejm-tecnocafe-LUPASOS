@@ -34,13 +34,10 @@ const int PRECIO_PANDEBONO = 3000;
  */
 const int PRECIO_SANDWICH = 8500;
 
-
-//Precio del nuevo producto.
 /**
  * @brief Precio del producto Pastel.
  */
 const int PRECIO_PASTEL = 6000;
-
 
 // --- Descuentos (% expresado de 0.0 a 1.0) ---
 /**
@@ -57,6 +54,11 @@ const double DESCUENTO_PROFESOR = 0.05;
  * @brief Descuento aplicado a visitantes (0%).
  */
 const double DESCUENTO_VISITANTE = 0.00;
+
+/**
+ * @brief Descuento aplicado a personas de la tercera edad (20%).
+ */
+const double DESCUENTO_SENIOR = 0.20;
 
 /**
  * @brief Máximo número de ítems distintos que se pueden registrar en un pedido.
@@ -105,6 +107,14 @@ string obtenerNombreProducto(int codigoProducto);
 void registrarProducto(int codigos[], int cantidades[], int& cantidadItemsRegistrados);
 
 /**
+ * @brief Elimina un producto del pedido actual.
+ * @param codigos Arreglo de códigos de productos en el pedido.
+ * @param cantidades Arreglo de cantidades de productos en el pedido.
+ * @param cantidadItemsRegistrados Referencia al número de ítems registrados en el pedido.
+ */
+void eliminarProducto(int codigos[], int cantidades[], int& cantidadItemsRegistrados);
+
+/**
  * @brief Calcula el subtotal del pedido actual.
  * @param codigos Arreglo de códigos de productos en el pedido.
  * @param cantidades Arreglo de cantidades de productos en el pedido.
@@ -121,7 +131,7 @@ int leerTipoUsuario();
 
 /**
  * @brief Obtiene el porcentaje de descuento según el tipo de usuario.
- * @param tipoUsuario Tipo de usuario (estudiante, profesor, visitante).
+ * @param tipoUsuario Tipo de usuario (estudiante, profesor, visitante, senior).
  * @return Porcentaje de descuento correspondiente.
  */
 double obtenerPorcentajeDescuento(int tipoUsuario);
@@ -151,5 +161,13 @@ void mostrarResumenPedido(const int codigos[], const int cantidades[], int canti
  * @param cantidadItemsRegistrados Referencia al número de ítems registrados en el pedido.
  */
 void prediligenciarProductosDemo(int codigos[], int cantidades[], int& cantidadItemsRegistrados);
+
+/**
+ * @brief Muestra el producto más caro del pedido.
+ * @param codigos Arreglo de códigos de productos en el pedido.
+ * @param cantidades Arreglo de cantidades de productos en el pedido.
+ * @param cantidadItemsRegistrados Número de ítems registrados en el pedido.
+ */
+void mostrarProductoMasCaro(const int codigos[], const int cantidades[], int cantidadItemsRegistrados);
 
 #endif //CAFE_H

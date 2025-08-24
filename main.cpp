@@ -15,10 +15,12 @@ void mostrarMenuPrincipal()
 {
     cout << "===== TecnoCafe - Menu Principal =====\n";
     cout << "1. Registrar producto al pedido\n";
-    cout << "2. Ver resumen del pedido\n";
-    cout << "3. Finalizar y pagar\n";
-    cout << "4. Prediligenciar productos de demostracion\n";
-    cout << "5. Salir\n";
+    cout << "2. Eliminar un producto del pedido\n"; // Nueva opcion
+    cout << "3. Ver resumen del pedido\n"; // Se movio la opcion
+    cout << "4. Finalizar y pagar\n"; // Se movio la opcion
+    cout << "5. Prediligenciar productos de demostracion\n"; // Se movio la opcion
+    cout << "6. Mostrar el producto mas caro del pedido\n"; // Nueva opcion
+    cout << "7. Salir\n";
     cout << "Seleccione una opcion: ";
 }
 
@@ -26,9 +28,10 @@ int leerOpcionMenu()
 {
     int opcion;
     cin >> opcion;
-    while (opcion < 1 || opcion > 5)
+    // Validacion ajustada para las nuevas opciones
+    while (opcion < 1 || opcion > 7)
     {
-        cout << "Opcion invalida. Intente de nuevo (1-4): ";
+        cout << "Opcion invalida. Intente de nuevo (1-7): ";
         cin.clear();
         cin.ignore(10000, '\n');
         cin >> opcion;
@@ -49,7 +52,6 @@ int main()
     int codigos[MAX_ITEMS] = {0};
     int cantidades[MAX_ITEMS] = {0};
 
-;
     int cantidadItemsRegistrados = 0;
 
 
@@ -67,15 +69,19 @@ int main()
                 registrarProducto(codigos, cantidades, cantidadItemsRegistrados);
                 break;
             }
-
         case 2:
+            {
+                eliminarProducto(codigos, cantidades, cantidadItemsRegistrados);
+                break;
+            }
+        case 3:
             {
                 double subtotal = calcularSubtotalPedido(codigos, cantidades, cantidadItemsRegistrados);
                 cout << fixed << setprecision(2);
                 cout << "\nSubtotal actual: $" << subtotal << "\n\n";
                 break;
             }
-        case 3:
+        case 4:
             {
                 if (cantidadItemsRegistrados == 0)
                 {
@@ -92,20 +98,24 @@ int main()
                 cout << "Total a pagar: $" << total << "\n\n";
                 break;
             }
-        case 4:
+        case 5:
             {
                 prediligenciarProductosDemo(codigos, cantidades, cantidadItemsRegistrados);
                 break;
             }
-
-        case 5:
+        case 6:
+            {
+                mostrarProductoMasCaro(codigos, cantidades, cantidadItemsRegistrados);
+                break;
+            }
+        case 7:
             {
                 cout << "\nSaliendo del sistema. ¡Hasta pronto!\n";
                 break;
             }
         }
     }
-    while (opcion != 5);
+    while (opcion != 7);
 
     return 0;
 }
